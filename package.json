@@ -1,0 +1,44 @@
+{
+  "name": "@simonschick/blitzortungapi",
+  "version": "1.0.0",
+  "description": "Simple WebSocket API for Blitzortung.de",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "dependencies": {
+    "ws": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.17",
+    "@types/ws": "^3.0.2",
+    "rimraf": "^2.6.1",
+    "standard-version": "^4.2.0",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.4.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist && tsc",
+    "example": "ts-node example.ts",
+    "prep-release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SimonSchick/BlitzortungAPI.git"
+  },
+  "keywords": [
+    "lightning",
+    "weather",
+    "api",
+    "websocket",
+    "blitzortung"
+  ],
+  "author": "Simon Schick",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SimonSchick/BlitzortungAPI/issues"
+  },
+  "homepage": "https://github.com/SimonSchick/BlitzortungAPI#readme"
+}
