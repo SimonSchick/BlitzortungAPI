@@ -1,6 +1,6 @@
 # BlitzortungAPI
 
-Simple WebSocket API for [Blitzortung](Blitzortung.org)
+Simple WebSocket API for [Blitzortung](https://Blitzortung.org)
 
 # Installation
 
@@ -13,4 +13,4 @@ Please see the [example](example.ts)
 # Notes
 
  - This project uses TypeScript and I highly recommend using TypeScript for it's consumption.
- - As the `Client` is relatively simple I will not in depth documentation.
+ - As the `Client` is relatively simple I will add not in depth documentation.
