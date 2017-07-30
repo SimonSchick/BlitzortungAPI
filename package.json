@@ -22,7 +22,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && tsc",
     "example": "ts-node example.ts",
-    "prep-release": "standard-version"
+    "prep-release": "standard-version",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
