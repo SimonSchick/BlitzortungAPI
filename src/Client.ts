@@ -91,8 +91,14 @@ export interface Strike {
     deviation: number;
 }
 
+export class NotConnectedError extends Error {
+    constructor (public readonly client: Client) {
+        super('Client not connected');
+    }
+}
+
 export class Client extends EventEmitter {
-    private socket: WebSocket;
+    private socket: WebSocket | undefined;
 
     constructor (private socketFactory: SocketFactory) {
         super();
@@ -122,7 +128,7 @@ export class Client extends EventEmitter {
         return this;
     }
 
-    public getSocket () {
+    public getSocket (): WebSocket | undefined {
         return this.socket;
     }
 
@@ -144,6 +150,9 @@ export class Client extends EventEmitter {
      * Closes the connection to the remote API and detaches all listeners.
      */
     public close () {
+        if (!this.socket) {
+            throw new NotConnectedError(this);
+        }
         this.socket.close();
         this.removeAllListeners();
     }
@@ -154,7 +163,7 @@ export class Client extends EventEmitter {
      */
     public setArea(from: GeoLocation, to: GeoLocation) {
         if (!this.socket) {
-            throw new Error('Socket not connected');
+            throw new NotConnectedError(this);
         }
         this.sendJSON({
             west: from.longitude,
@@ -201,6 +210,6 @@ export class Client extends EventEmitter {
     }
 
     private sendJSON(data: any) {
-        this.socket.send(JSON.stringify(data));
+        this.socket!.send(JSON.stringify(data));
     }
 }
