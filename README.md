@@ -1,6 +1,6 @@
 # BlitzortungAPI
 
-Simple WebSocket API for Blitzortung.de
+Simple WebSocket API for [Blitzortung](Blitzortung.org)
 
 # Installation
 
