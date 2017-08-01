@@ -8,7 +8,7 @@ const c = new Client({
 });
 
 c.connect();
-c.getSocket().on('data', console.log);
+c.getSocket()!.on('data', console.log);
 c.on('error', console.error);
 c.on('connect', () => {
     c.setIncludeDetectors(false);
