@@ -11,6 +11,11 @@ export interface GeoLocation {
     longitude: number;
 }
 
+export interface GeoArea {
+    from: GeoLocation;
+    to: GeoLocation;
+}
+
 interface RawDetector {
     /**
      * Unknown.
@@ -161,15 +166,15 @@ export class Client extends EventEmitter {
      * Sets the geo area the API should send data for.
      * Please note that this does not affect the incoming data immediately.
      */
-    public setArea(from: GeoLocation, to: GeoLocation) {
+    public setArea(area: GeoArea) {
         if (!this.socket) {
             throw new NotConnectedError(this);
         }
         this.sendJSON({
-            west: from.longitude,
-            east: to.longitude,
-            north: from.latitude,
-            south: to.latitude
+            west: area.from.longitude,
+            east: area.to.longitude,
+            north: area.from.latitude,
+            south: area.to.latitude
         });
     }
 
