@@ -16,15 +16,25 @@ export interface GeoArea {
     to: GeoLocation;
 }
 
-interface RawDetector {
-    /**
-     * Unknown.
-     * Probably ID.
-     */
-    sta: string;
+export const enum Polarity {
+    Negative,
+    Positive,
+}
+
+interface RawLocation {
     lat: number;
     lon: number;
+    /**
+     * altitude in meters.
+     */
     alt: number;
+}
+
+interface RawDetector extends RawLocation {
+    /**
+     * Station ID.
+     */
+    sta: string;
     /**
      * Bitflag.
      */
@@ -35,27 +45,21 @@ interface RawDetector {
     time: number
 }
 
-interface RawStrike {
+interface RawStrike extends RawLocation {
     /**
      * Unix timestamp in nanoseconds
      */
     time: number;
-    lat: number;
-    lon: number;
     /**
-     * altitude in meters.
+     * Polarity, polarity, -1 or +1
      */
-    alt: 0;
-    /**
-     * Unknown.
-     */
-    pol: 0;
+    pol: number;
     /**
      * Deviation.
      */
     mds: number;
     /**
-     * Unknown.
+     * Max circular gap
      */
     mcg: number;
     /**
@@ -94,6 +98,9 @@ export interface Strike {
     detectors: Detector[];
     delay: number;
     deviation: number;
+    polarity: Polarity;
+    maxDeviation: number;
+    maxCircularGap: number;
 }
 
 export class NotConnectedError extends Error {
@@ -211,6 +218,9 @@ export class Client extends EventEmitter {
                 status: rawDec.status,
                 delay: rawDec.time,
             })),
+            polarity: strike.pol > 0 ? Polarity.Positive : Polarity.Negative,
+            maxDeviation: strike.mds,
+            maxCircularGap: strike.mcg,
         }
     }
 
