@@ -1,6 +1,19 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [3.0.0](https://github.com/SimonSchick/BlitzortungAPI/compare/v1.0.3...v3.0.0) (2020-07-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Only node >=v10 supported
+* Removed `Client.setIncludeDetectors` as it has become a noop, detectors are always received
+
+### Features
+
+* **client:** Add `region` to `Strike`. ([dece566](https://github.com/SimonSchick/BlitzortungAPI/commit/dece56683e435a1d8e6bf98066b146ae4e94f5cd))
+* **client:** Update default url generation to use random wss server. ([dece566](https://github.com/SimonSchick/BlitzortungAPI/commit/dece56683e435a1d8e6bf98066b146ae4e94f5cd))
 
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/SimonSchick/BlitzortungAPI/compare/v1.0.3...v2.0.0) (2018-04-21)
