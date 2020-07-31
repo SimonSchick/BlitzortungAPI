@@ -1,4 +1,3 @@
-import { Location, Detector } from './Client';
 import * as WebSocket from 'ws';
 import { EventEmitter } from 'events';
 
@@ -16,9 +15,18 @@ export interface GeoArea {
     to: GeoLocation;
 }
 
-export const enum Polarity {
+export enum Polarity {
     Negative,
     Positive,
+}
+
+export enum Region {
+    Unknown = 0,
+    Europe = 1,
+    Oceania = 2,
+    NorthAmerica = 3,
+    Asia = 4,
+    SouthAmerica = 5,
 }
 
 interface RawLocation {
@@ -70,6 +78,10 @@ interface RawStrike extends RawLocation {
      * In seconds.
      */
     delay: number;
+    /**
+     * Refers to a region, see http://en.blitzortung.org/compendium.php see section `Access to the raw data`
+     */
+    region: number;
 }
 
 export interface Location extends GeoLocation {
@@ -101,6 +113,7 @@ export interface Strike {
     polarity: Polarity;
     maxDeviation: number;
     maxCircularGap: number;
+    region: Region;
 }
 
 export class NotConnectedError extends Error {
@@ -124,7 +137,7 @@ export interface Client {
 }
 
 export class Client extends EventEmitter {
-    private socket: WebSocket | undefined;
+    private socket?: WebSocket;
 
     constructor(private socketFactory: SocketFactory) {
         super();
@@ -137,8 +150,8 @@ export class Client extends EventEmitter {
     /**
      * Connects to the remote API.
      */
-    public connect() {
-        const socket = this.socket = this.socketFactory.make('ws://ws.blitzortung.org:8060/');
+    public connect(url = this.generateRandomConnectionUrl()) {
+        const socket = this.socket = this.socketFactory.make(url);
         socket.on('message', (rawData: string) => {
             this.emit('data', this.buildStrikeData(JSON.parse(rawData)));
         });
@@ -175,19 +188,6 @@ export class Client extends EventEmitter {
         });
     }
 
-    /**
-     * Requested the API include/omit any detector data.
-     * Please note that this does not affect the incoming data immediately.
-     */
-    public setIncludeDetectors(include: boolean) {
-        if (!this.socket) {
-            throw new Error('Socket not connected');
-        }
-        this.sendJSON({
-            sig: include,
-        });
-    }
-
     private processRawLocation(location: { lat: number; lon: number; alt: number }): Location {
         return {
             latitude: location.lat,
@@ -211,10 +211,16 @@ export class Client extends EventEmitter {
             polarity: strike.pol > 0 ? Polarity.Positive : Polarity.Negative,
             maxDeviation: strike.mds,
             maxCircularGap: strike.mcg,
+            region: 1 <= strike.region && strike.region <= 5 ? <Region>strike.region : Region.Unknown,
         }
     }
 
     private sendJSON(data: any) {
         this.socket!.send(JSON.stringify(data));
+    }
+
+    private generateRandomConnectionUrl() {
+        const knownServerIds = [1, 6, 5, 7];
+        return `wss://ws${knownServerIds[Math.floor(Math.random() * knownServerIds.length)]}.blitzortung.org:3000/`;
     }
 }
