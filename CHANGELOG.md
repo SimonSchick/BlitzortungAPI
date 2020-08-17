@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.1](https://github.com/SimonSchick/BlitzortungAPI/compare/v4.0.0...v4.0.1) (2020-08-17)
+
+
+### Bug Fixes
+
+* **client:** add missing initial client message required to receive data (apparently) ([80488bf](https://github.com/SimonSchick/BlitzortungAPI/commit/80488bfaad1a9c4c775204149dc27ef5e74599e0))
+
 ## [4.0.0](https://github.com/SimonSchick/BlitzortungAPI/compare/v1.0.3...v4.0.0) (2020-08-17)
 
 
