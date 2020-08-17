@@ -147,6 +147,9 @@ export class Client extends EventEmitter {
             this.emit('data', this.buildStrikeData(JSON.parse(rawData)));
         });
         socket.on('open', () => {
+            this.sendJSON({
+                time: 0,
+            });
             this.emit('connect', socket);
         });
         socket.on('error', err => this.emit('error', err));
@@ -188,6 +191,10 @@ export class Client extends EventEmitter {
             maxCircularGap: strike.mcg,
             region: 1 <= strike.region && strike.region <= 5 ? <Region>strike.region : Region.Unknown,
         }
+    }
+
+    private sendJSON(data: any) {
+        this.socket!.send(JSON.stringify(data));
     }
 
     private generateRandomConnectionUrl() {

@@ -38,6 +38,7 @@ const c = new Client({
 c.connect();
 c.on('error', console.error);
 c.on('data', strike => {
+    delete strike.detectors;
     console.log({
         ...strike,
         distance: Math.round(sphericalDistance(myPos, strike.location, 6371))
