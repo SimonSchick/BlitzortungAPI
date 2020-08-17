@@ -190,10 +190,6 @@ export class Client extends EventEmitter {
         }
     }
 
-    private sendJSON(data: any) {
-        this.socket!.send(JSON.stringify(data));
-    }
-
     private generateRandomConnectionUrl() {
         const knownServerIds = [1, 6, 5, 7];
         return `wss://ws${knownServerIds[Math.floor(Math.random() * knownServerIds.length)]}.blitzortung.org:3000/`;
