@@ -50,7 +50,7 @@ interface RawDetector extends RawLocation {
     /**
      * Delay in nanoseconds.
      */
-    time: number
+    time: number;
 }
 
 interface RawStrike extends RawLocation {
@@ -98,10 +98,6 @@ export interface Detector {
      * Unknown.
      */
     status: number;
-    /**
-     * Delay in nanoseconds.
-     */
-    delay: number
 }
 
 export interface Strike {
