@@ -1,6 +1,5 @@
 import * as WebSocket from 'ws';
-import { Client } from './src/Client';
-import { locations } from './src/locations';
+import { Client } from './src';
 
 interface GeoPoint {
     latitude: number;
@@ -38,9 +37,6 @@ const c = new Client({
 
 c.connect();
 c.on('error', console.error);
-c.on('connect', () => {
-    c.setArea(locations.global);
-})
 c.on('data', strike => {
     console.log({
         ...strike,
