@@ -144,11 +144,11 @@ export class Client extends EventEmitter {
     public connect(url = this.generateRandomConnectionUrl()) {
         const socket = this.socket = this.socketFactory.make(url);
         socket.on('message', (rawData: string) => {
-            this.emit('data', this.buildStrikeData(JSON.parse(rawData)));
+            this.emit('data', this.buildStrikeData(JSON.parse(this.decode(rawData))));
         });
         socket.on('open', () => {
             this.sendJSON({
-                time: 0,
+                a: 111,
             });
             this.emit('connect', socket);
         });
@@ -198,7 +198,28 @@ export class Client extends EventEmitter {
     }
 
     private generateRandomConnectionUrl() {
-        const knownServerIds = [1, 6, 5, 7];
-        return `wss://ws${knownServerIds[Math.floor(Math.random() * knownServerIds.length)]}.blitzortung.org:3000/`;
+        const knownServerIds = [1, 6, 7, 8];
+        return `wss://ws${knownServerIds[Math.floor(Math.random() * knownServerIds.length)]}.blitzortung.org`;
+    }
+
+    private decode(b: string): string {
+        var a: string,
+            e: {[key: number]: string} = {},
+            d: string[] = b.split(""),
+            c: string = d[0],
+            f: string = c,
+            g: string[] = [c],
+            h: number = 256,
+            o: number = h;
+        for (var i = 1; i < d.length; i++) {
+            a = d[i].charCodeAt(0).toString();
+            a = h > parseInt(a) ? d[i] : e[parseInt(a)] ? e[parseInt(a)] : f + c;
+            g.push(a);
+            c = a.charAt(0);
+            e[o] = f + c;
+            o++;
+            f = a;
+        }
+        return g.join("");
     }
 }
